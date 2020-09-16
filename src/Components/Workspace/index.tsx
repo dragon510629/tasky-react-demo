@@ -24,6 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import './index.scss';
 
 
 import {connect} from 'react-redux';
@@ -40,11 +41,11 @@ const useStyles = makeStyles({
 
 function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, workspace, client}: any) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [openSelect, setOpenSelect] = React.useState(false);
-  const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [workspaceSelected, setWorkspaceSelected] = React.useState(0);
-  const [newWorkspace, setNewWorkspace] = React.useState({
+  const [open, setOpen] = useState(false);
+  const [openSelect, setOpenSelect] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [workspaceSelected, setWorkspaceSelected] = useState(0);
+  const [newWorkspace, setNewWorkspace] = useState({
     workspaceName: '',
     client: 0
   });

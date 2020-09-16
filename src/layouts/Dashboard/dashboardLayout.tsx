@@ -20,6 +20,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { Link } from "react-router-dom";
 import './index.scss';
+import { connect } from 'react-redux';
 
 const drawerWidth = 240;
 
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 const menuList = [{title: 'Workspace' , to: '/workspace' }, {title: 'Client', to: '/client'}];
 
-export default function DashboardLayout({children, ...rest} : any) {
+function DashboardLayout({children, auth, ...rest} : any) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -103,6 +104,7 @@ export default function DashboardLayout({children, ...rest} : any) {
 
   const logout = () => {
     localStorage.clear();
+    history.push('/login');
   }
 
   const handleLink = (to : any) => {
@@ -118,7 +120,7 @@ export default function DashboardLayout({children, ...rest} : any) {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        <Toolbar className="toolbar">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -130,8 +132,8 @@ export default function DashboardLayout({children, ...rest} : any) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Tasky React
+          <Typography variant="h6" className="user-info">
+            {auth.user.email}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -178,3 +180,12 @@ export default function DashboardLayout({children, ...rest} : any) {
     </div>
   );
 }
+
+const mapStateToProps = (state: any) : any => {
+  return {
+    auth : state.main,
+  }
+}
+
+
+export default connect(mapStateToProps, )(DashboardLayout);

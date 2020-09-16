@@ -1,17 +1,9 @@
 .logo{
   cursor: pointer;
 }
-.button-create-workspace{
-  margin-top: 50px !important;
-}
-.button-create{
-  margin-bottom: 50px !important;
-  background-color: #0040FF !important;
-  color: white !important;
-}
-.form-create{
-  width: 500px;
-  margin-top: 50px;
+.toolbar{
+  display: flex;
+  justify-content: space-between;
 }
 .MuiButtonBase-root {
   a {
