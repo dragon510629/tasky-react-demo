@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const menuList = [{title: 'Workspace' , to: '/workspace' }, {title: 'Client'}, {title : 'User'}];
+const menuList = [{title: 'Workspace' , to: '/workspace' }, {title: 'Client', to: '/client'}];
 
 export default function DashboardLayout({children, ...rest} : any) {
   const classes = useStyles();
@@ -103,6 +103,10 @@ export default function DashboardLayout({children, ...rest} : any) {
 
   const logout = () => {
     localStorage.clear();
+  }
+
+  const handleLink = (to : any) => {
+    history.push(`${to}`);
   }
 
   return (
@@ -127,7 +131,7 @@ export default function DashboardLayout({children, ...rest} : any) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            Tasky React
           </Typography>
         </Toolbar>
       </AppBar>
@@ -145,7 +149,7 @@ export default function DashboardLayout({children, ...rest} : any) {
         }}
       >
         <div className={classes.toolbar}>
-          <h1>asdasd</h1>
+          <h1 className="logo" onClick={() => history.push('/') }>React</h1>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
@@ -153,7 +157,7 @@ export default function DashboardLayout({children, ...rest} : any) {
         <Divider />
         <List>
           {menuList.map((item: any, index) => (
-            <ListItem button key={index}>
+            <ListItem button key={index} onClick={() => handleLink(item.to)}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <Link to={item.to}>{item.title}</Link>
             </ListItem>

@@ -1,1 +1,2 @@
 export const SAVE_LIST = 'SAVE_LIST';
+export const SET_SELECTED_WORKSPACE = 'SET_SELECTED_WORKSPACE';

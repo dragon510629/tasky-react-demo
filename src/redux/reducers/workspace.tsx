@@ -2,6 +2,7 @@ import * as types from '../constants/workspace';
 
 const initialState = {
   listWorkspace : [],
+  workspaceSelected: {},
 };
 
 const reducer = (state = initialState, action : any) => {
@@ -10,6 +11,11 @@ const reducer = (state = initialState, action : any) => {
       return {
         ...state,
         listWorkspace : action.data,
+      }
+    case types.SET_SELECTED_WORKSPACE :
+      return {
+        ...state,
+        workspaceSelected : action.data,
       }
     default:
       return state;

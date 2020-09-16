@@ -1,6 +1,6 @@
-import httpClient, { AxiosResponse, Method } from 'axios';
+import { AxiosResponse, Method } from 'axios';
 import { LoginRequest } from '../models/AuthRequest';
+import { httpClient } from './config';
 
-const api = 'http://localhost:3000/api/v0/';
 
-export const login = (data : LoginRequest ): Promise<AxiosResponse> => httpClient.post(`${api}auth/login`, data);
+export const login = (data : LoginRequest ): Promise<AxiosResponse> => httpClient.post('auth/login', data);
