@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from "../Components/Login";
-import Dashboard from "../Components/Workspace/index";
+import Dashboard from "../Components/Dashboard/index";
+import WorkSpace from "../Components/Workspace/index";
 
 export const DashboardRouter = [
   {
@@ -14,6 +15,18 @@ export const DashboardRouter = [
       },
     ],
     component: Dashboard,
+  },
+  {
+    id: 'workspace',
+    path: '/workspace',
+    children: [
+      {
+        path: '/workspace',
+        name: 'WorkSpace',
+        component: WorkSpace,
+      },
+    ],
+    component: WorkSpace,
   },
 ];
 

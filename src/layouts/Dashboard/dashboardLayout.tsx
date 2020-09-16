@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useHistory } from "react-router-dom";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +18,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { Link } from "react-router-dom";
+import './index.scss';
 
 const drawerWidth = 240;
 
@@ -71,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-evenly',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -82,12 +85,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const menuList = ['Workspace', 'Client', 'User'];
+const menuList = [{title: 'Workspace' , to: '/workspace' }, {title: 'Client'}, {title : 'User'}];
 
 export default function DashboardLayout({children, ...rest} : any) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,6 +100,10 @@ export default function DashboardLayout({children, ...rest} : any) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const logout = () => {
+    localStorage.clear();
+  }
 
   return (
     <div className={classes.root}>
@@ -137,20 +145,27 @@ export default function DashboardLayout({children, ...rest} : any) {
         }}
       >
         <div className={classes.toolbar}>
+          <h1>asdasd</h1>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {menuList.map((text, index) => (
-            <ListItem button key={text}>
+          {menuList.map((item: any, index) => (
+            <ListItem button key={index}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+              <Link to={item.to}>{item.title}</Link>
             </ListItem>
           ))}
         </List>
         <Divider />
+        <List>
+          <ListItem button key="Logout" onClick={logout}>
+            <ListItemIcon><InboxIcon /></ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItem>
+        </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />

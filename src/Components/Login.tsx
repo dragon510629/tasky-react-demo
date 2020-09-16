@@ -48,20 +48,37 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  textError: {
+    color: 'red',
+  }
 }));
 
-const SignIn = ({ saveAuth, auth, saveUserInfo }: any):any => {
+function SignIn({ saveAuth, saveUserInfo }: any):any {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErros] = useState({
+    errorEmail: [],
+    errorPassword: []
+  });
   const history = useHistory();
   const classes = useStyles();
 
   const onLogin = async (e : any) => {
+    let error:any = {
+      errorEmail: [],
+      errorPassword: [],
+    };
+    if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+      error.errorEmail.push("Email invalid");
+    }
+    if(password.length < 6){
+      error.errorPassword.push("The password must not be less than 6 characters");
+    }
+    setErros(error);
     try {
       const auth = await login({email, password});
       saveAuth(auth.data.token);
       saveUserInfo(auth.data.user);
-      localStorage.setItem('token', auth.data.token);
       history.push('./')
     } catch (e){
       console.log(e);
@@ -100,6 +117,7 @@ const SignIn = ({ saveAuth, auth, saveUserInfo }: any):any => {
             value={email}
             onChange={changeForm}
           />
+          {errors.errorEmail.map((item)=> (<p className={classes.textError}>{item}</p>))}
           <TextField
             variant="outlined"
             margin="normal"
@@ -113,6 +131,7 @@ const SignIn = ({ saveAuth, auth, saveUserInfo }: any):any => {
             value={password}
             onChange={changeForm}
           />
+          {errors.errorPassword.map((item)=> (<p className={classes.textError}>{item}</p>))}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"

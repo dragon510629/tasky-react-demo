@@ -1,6 +1,6 @@
 import * as types from '../constants/auth';
 const initialState = {
-  token : '123',
+  token : '',
   user : {
     email: '',
     firstName: '',

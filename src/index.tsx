@@ -5,12 +5,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './redux/store/store';
+import { store, persistor } from './redux/store/store';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+    <PersistGate loading={<h1>loading</h1>} persistor={persistor}>
+        <App />
+    </PersistGate>
     </Provider>
   </BrowserRouter>,
   document.getElementById('root')
