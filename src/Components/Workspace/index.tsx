@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {deleteWorkspaceApi, getListWorkSpace, workSpaceDetail, createWorkspaceApi} from '../../api/workSpace';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,8 +13,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {makeStyles} from '@material-ui/core/styles';
-import * as actions from "../../redux/actions/workspace";
-import * as clientActions from "../../redux/actions/client";
 import Drawer from '@material-ui/core/Drawer';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -39,12 +36,12 @@ const useStyles = makeStyles({
   },
 });
 
-function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, workspace, client}: any) {
+function Workspace({workspace, client}: any) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openSelect, setOpenSelect] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [workspaceSelected, setWorkspaceSelected] = useState(0);
+  const [WorkspaceDeletedId, setWorkspaceDeletedId] = useState(0);
   const [newWorkspace, setNewWorkspace] = useState({
     workspaceName: '',
     client: 0
@@ -55,33 +52,16 @@ function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, worksp
   }, []);
 
   const getWorkspaceDetail = (id: number) => {
-    workSpaceDetail(id)
-      .then(
-        (res) => {
-          selectedWorkspace(res.data);
-        }
-      ).catch();
+    store.dispatch({type: 'GET_LIST_CLIENT',payload: id})
   }
 
   const deleteWorkspace = (id: number) => {
     setOpen(true);
-    setWorkspaceSelected(id);
+    setWorkspaceDeletedId(id);
   }
 
   const handleDeleteWorkspace = () => {
-    deleteWorkspaceApi(workspaceSelected)
-      .then(
-        (res) => {
-          selectedWorkspace(res.data);
-          getListWorkSpace()
-            .then(
-              (res) => {
-                saveListWorkspace(res.data);
-              }
-            )
-            .catch();
-        }
-      ).catch();
+    store.dispatch({type: 'DELETE_WORKSPACE',payload: WorkspaceDeletedId})
     setOpen(false);
   }
 
@@ -105,25 +85,8 @@ function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, worksp
   }
 
   const CreateWorkspace = () => {
-    createWorkspaceApi({
-      name: newWorkspace.workspaceName,
-      clientId: newWorkspace.client,
-    })
-      .then(
-        (res) => {
-          selectedWorkspace(res.data);
-          getListWorkSpace()
-            .then(
-              (res) => {
-                saveListWorkspace(res.data);
-              }
-            )
-            .catch();
-        }
-      ).catch();
+    store.dispatch({type: 'CREATE_WORKSPACE',payload: newWorkspace})
     setOpenDrawer(false);
-
-    // store.dispatch({type: 'USER_FETCH_REQUESTED', payload: 1})
   }
   return (
     <Container maxWidth="lg">
@@ -138,7 +101,7 @@ function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, worksp
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <h3 className={classes.titleConfirmDelete}>Are you sure delete workspace?</h3>
+            <span className={classes.titleConfirmDelete}>Are you sure delete workspace?</span>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -256,15 +219,6 @@ const mapStateToProps = (state: any): any => {
 
 const mapActionToProps = (dispatch: any) => {
   return {
-    saveListWorkspace: (data: []) => {
-      dispatch(actions.saveListWorkspace(data));
-    },
-    selectedWorkspace: (data: {}) => {
-      dispatch(actions.selectWorkspace(data));
-    },
-    saveListClient: (data: []) => {
-      dispatch(clientActions.saveListClients(data));
-    }
   }
 }
 

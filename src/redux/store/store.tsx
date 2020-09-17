@@ -5,7 +5,7 @@ import clientReducers from '../reducers/client';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
-import mySaga from '../sagas';
+import rootSaga from '../sagas';
 
 const reducer = combineReducers({
   main : mainReducers,
@@ -27,7 +27,7 @@ export const store =  createStore(
   applyMiddleware(sagaMiddleware)
 );
 
-sagaMiddleware.run(mySaga)
+sagaMiddleware.run(rootSaga)
 
 export const persistor = persistStore(store);
 

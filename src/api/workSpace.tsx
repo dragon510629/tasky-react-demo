@@ -9,7 +9,7 @@ interface CreateWorkspaceRequest {
 
 export const getListWorkSpace = (): Promise<AxiosResponse> => httpClient.get('workspace')
 
-export const workSpaceDetail = (id : number): Promise<AxiosResponse> => httpClient.get(`workspace/${id}`)
+export const workSpaceDetailAPI = (id : number): Promise<AxiosResponse> => httpClient.get(`workspace/${id}`)
 
 export const createWorkspaceApi = (data: CreateWorkspaceRequest): Promise<AxiosResponse> => httpClient.post(`workspace/`,data);
 
