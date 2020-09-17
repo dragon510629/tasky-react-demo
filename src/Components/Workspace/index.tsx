@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {deleteWorkspaceApi, getListWorkSpace, workSpaceDetail, createWorkspaceApi} from '../../api/workSpace';
-import {getListClient} from '../../api/client';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,6 +24,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import './index.scss';
+import {store} from '../../redux/store/store';
 
 
 import {connect} from 'react-redux';
@@ -50,21 +50,8 @@ function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, worksp
     client: 0
   });
   useEffect((): any => {
-    // Update the document title using the browser API
-    getListWorkSpace()
-      .then(
-        (res) => {
-          saveListWorkspace(res.data);
-        }
-      )
-      .catch();
-    getListClient()
-      .then(
-        (res) => {
-          saveListClient(res.data);
-        }
-      )
-      .catch();
+    store.dispatch({type: 'GET_LIST_WORKSPACE'})
+    store.dispatch({type: 'GET_LIST_CLIENT'})
   }, []);
 
   const getWorkspaceDetail = (id: number) => {
@@ -135,6 +122,8 @@ function Workspace({saveListWorkspace, selectedWorkspace, saveListClient, worksp
         }
       ).catch();
     setOpenDrawer(false);
+
+    // store.dispatch({type: 'USER_FETCH_REQUESTED', payload: 1})
   }
   return (
     <Container maxWidth="lg">

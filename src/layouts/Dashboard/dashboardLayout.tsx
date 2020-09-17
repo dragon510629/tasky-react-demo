@@ -18,7 +18,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Link } from "react-router-dom";
 import './index.scss';
 import { connect } from 'react-redux';
 
@@ -161,7 +160,7 @@ function DashboardLayout({children, auth, ...rest} : any) {
           {menuList.map((item: any, index) => (
             <ListItem button key={index} onClick={() => handleLink(item.to)}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <Link to={item.to}>{item.title}</Link>
+              <ListItemText primary={item.title} />
             </ListItem>
           ))}
         </List>

@@ -54,8 +54,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignIn({ saveAuth, saveUserInfo }: any):any {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
   const [errors, setErros] = useState({
     errorEmail: [],
     errorPassword: []
@@ -68,15 +70,18 @@ function SignIn({ saveAuth, saveUserInfo }: any):any {
       errorEmail: [],
       errorPassword: [],
     };
-    if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
+    if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email))){
       error.errorEmail.push("Email invalid");
     }
-    if(password.length < 6){
+    if(formData.password.length < 6){
       error.errorPassword.push("The password must not be less than 6 characters");
     }
     setErros(error);
+    if(error.errorEmail.length > 0 || error.errorPassword.length > 0) {
+      return
+    }
     try {
-      const auth = await login({email, password});
+      const auth = await login({...formData});
       saveAuth(auth.data.token);
       saveUserInfo(auth.data.user);
       history.push('./')
@@ -87,11 +92,10 @@ function SignIn({ saveAuth, saveUserInfo }: any):any {
   const changeForm = (e : any) => {
     e.preventDefault();
     const {value , name} = e.target;
-    if(name === 'email'){
-      setEmail(value);
-    }else{
-      setPassword(value);
-    }
+    setFormData({
+      ...formData,
+      [ name ] : value,
+    })
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -114,10 +118,10 @@ function SignIn({ saveAuth, saveUserInfo }: any):any {
             name="email"
             autoComplete="email"
             autoFocus
-            value={email}
+            value={formData.email}
             onChange={changeForm}
           />
-          {errors.errorEmail.map((item)=> (<p className={classes.textError}>{item}</p>))}
+          {errors.errorEmail.map((text)=> (<p key={text} className={classes.textError}>{text}</p>))}
           <TextField
             variant="outlined"
             margin="normal"
@@ -128,10 +132,10 @@ function SignIn({ saveAuth, saveUserInfo }: any):any {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={password}
+            value={formData.password}
             onChange={changeForm}
           />
-          {errors.errorPassword.map((item)=> (<p className={classes.textError}>{item}</p>))}
+          {errors.errorPassword.map((text)=> (<p key={text} className={classes.textError}>{text}</p>))}
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"

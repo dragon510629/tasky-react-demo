@@ -1,4 +1,4 @@
-import { AxiosResponse, Method } from 'axios';
+import { AxiosResponse } from 'axios';
 import { LoginRequest } from '../models/AuthRequest';
 import { httpClient } from './config';
 

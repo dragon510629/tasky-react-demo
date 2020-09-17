@@ -1,4 +1,4 @@
 import { AxiosResponse } from 'axios';
 import { httpClient } from './config';
 
-export const getListClient = (): Promise<AxiosResponse> => httpClient.get('client')
+export const getListClientAPI = (): Promise<AxiosResponse> => httpClient.get('client')
